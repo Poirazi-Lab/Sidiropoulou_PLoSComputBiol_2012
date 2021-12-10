@@ -1,0 +1,11 @@
+// init.hoc
+
+load_file("template/ExperimentControl.hoc")
+load_file("template/RangeRef.hoc")
+load_file("template/SynapseBand.hoc")
+chdir("experiment/persistent")
+load_file("persistentIB.hoc")
+
+xpanel("Sidiropoulou K, Poirazi P (2012)")
+  xbutton("run simulation","run_sim()")
+xpanel()

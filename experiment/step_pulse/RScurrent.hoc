@@ -1,0 +1,247 @@
+// The goal of this experiment is to insure that our cell responses
+// are reasonably similar to the data on back propagating action potentials
+// where the site of current injection is at the soma 
+
+load_proc("nrnmainmenu")             // load main NEURON library
+cvode.active(0)
+load_template("ExperimentControl")   // load a custom made library function that centralizes parameters so as to 
+
+strdef accstr, tmpstr, tmp_str         // not confuse experimental variable bindings with neurophysiological variable bindings
+objref denddist, distvec, diamfile
+objref econ                          // Create an experiment object
+show_errs=1
+debug_lev=1
+
+econ=new ExperimentControl(show_errs,debug_lev)
+econ.self_define(econ) // points the object at itself
+econ.morphology_dir = "../../morphology/pfc"
+econ.generic_dir = "../../experiment"                                    // Setup directory with cell-setup file
+econ.add_lib_dir("Terrence","../../lib")                                  // Setup directory with library functions 
+
+econ.data_dir       = "data"                       // Define directory to save produced data 
+sprint(econ.syscmd, "mkdir -p %s", econ.data_dir)  // make the data directory
+system(econ.syscmd)
+
+// Setup cell
+
+econ.xopen_geometry_dependent("ratpfc22")  //enter filename of morhpology
+
+econ.xopen_library("Terrence","distance")
+
+printf("Opening cell-setup\n")
+econ.xopen_generic("RScell")                   // load the cell-setup file (define specific 
+
+printf("Opened. Setting up cell\n")                // channels, membrane properties etc)
+
+
+cell_setup(econ)
+
+//====================================================================================
+//Blockade procedures used
+
+//----------------------------------------------------------------------------
+//procedure for induction of sadp
+//In cell-setup, gip3 = 0.0001, gCAN=0.0005
+proc sadp() {
+forall {
+for(x) {
+	fi2=1.043*0 //factor for ican, 0.0001 in cellsetup
+	if(ismembrane("ican"))  for(x) { gbar_ican(x)= gbar_ican(x)*fi2 } 
+	}}}
+
+//------------------------------------------------------------------------------
+//Call pharmacological procedures
+sadp()	//need to run this procedure to have sadp zero
+//=============================================================================================
+
+// Set simulation parameters for the experiment 
+tstop=1000
+dt=0.1
+steps_per_ms=10
+setdt()
+
+// Insert current clamp into soma 
+
+access soma[0]
+objref ic
+
+proc steppulse() {
+
+ic = new IClamp(0.5)
+ic.del=100
+ic.dur=500
+ic.amp=-0.1
+
+}
+
+
+//5 spikes at 20hz frequency
+objref ic1, ic2, ic3, ic4, ic5
+amp=0.35
+
+proc train() {
+ic1 = new IClamp(0.5)
+ic1.del=50
+ic1.dur=5
+ic1.amp=amp
+
+ic2 = new IClamp(0.5)
+ic2.del=100
+ic2.dur=5
+ic2.amp=amp
+
+ic3 = new IClamp(0.5)
+ic3.del=150
+ic3.dur=5
+ic3.amp=amp
+
+ic4 = new IClamp(0.5)
+ic4.del=200
+ic4.dur=5
+ic4.amp=amp
+
+ic5 = new IClamp(0.5)
+ic5.del=250
+ic5.dur=5
+ic5.amp=amp
+
+}
+
+//==============================================================================================
+//Save data in vectors
+objref vsoma, cairec, icanrec, apic20, apic150, apic300, apic475, basal33, basal92, basal123, basal145
+
+
+vsoma = new Vector(tstop/dt)  //record voltage at the soma
+vsoma.record(&soma.v(0.5))
+
+apic20 = new Vector(tstop/dt)  //record voltage at apical dendrite at branch point of turft, 
+apic20.record(&apic[1].v(0.5))
+
+apic150 = new Vector(tstop/dt)  //record voltage at the trunk, 350um from the soma
+apic150.record(&apic[2].v(0.75))
+
+apic300 = new Vector(tstop/dt)  //record voltage at the apical tuft, 855um from the soma
+apic300.record(&apic[3].v(0.75))
+
+apic475 = new Vector(tstop/dt)  //record voltage at the apical tuft, 855um from the soma
+apic475.record(&apic[7].v(0.75))
+
+basal33 = new Vector(tstop/dt)  //record voltage at the apical tuft, 855um from the soma
+basal33.record(&dend[2].v(0.5))
+
+basal92 = new Vector(tstop/dt)  //record voltage at the apical tuft, 855um from the soma
+basal92.record(&dend[5].v(0.25))
+
+basal123 = new Vector(tstop/dt)  //record voltage at the apical tuft, 855um from the soma
+basal123.record(&dend[15].v(0.25))
+
+basal145 = new Vector(tstop/dt)  //record voltage at the apical tuft, 855um from the soma
+basal145.record(&dend[5].v(0.75))
+
+
+cairec = new Vector(tstop/dt)  //record voltage at the soma
+cairec.record(&soma.cai(0.5))
+
+icanrec = new Vector(tstop/dt)  //record voltage at the soma
+icanrec.record(&soma.in_ican(0.5))
+
+
+//=========================================================================================
+
+
+// Create basic graphics
+
+econ.xopen_library("Terrence","basic-graphics")                            // open graphics library file   
+
+addgraph_2("soma[0].v(0.5)",0,tstop,-70,50) //soma
+
+//call procedures
+steppulse()
+//train()
+
+// Initialize and run the experiment
+finitialize(v_init)
+fcurrent()
+run()
+
+
+//Make folder to store recorded waves into text files   
+strdef wave_vectors
+wave_vectors="data/waves"
+sprint(econ.syscmd, "mkdir -p %s",wave_vectors)
+system(econ.syscmd) 
+
+
+strdef temp
+objref somaref, cairef, apic20ref, apic150ref,apic300ref, apic475ref, icanref, ip3ref, calcref, ksref
+objref basal33ref,basal92ref, basal123ref, basal145ref
+
+somaref = new File()
+sprint(temp, "%s/soma.dat", wave_vectors)
+somaref.wopen(temp)
+vsoma.printf(somaref, "%f\n")
+somaref.close() 
+
+apic20ref = new File()
+sprint(temp, "%s/apic20.dat", wave_vectors)
+apic20ref.wopen(temp)
+apic20.printf(apic20ref, "%f\n")
+apic20ref.close() 
+
+apic150ref = new File()
+sprint(temp, "%s/apic150.dat", wave_vectors)
+apic150ref.wopen(temp)
+apic150.printf(apic150ref, "%f\n")
+apic150ref.close() 
+
+apic300ref = new File()
+sprint(temp, "%s/apic300.dat", wave_vectors)
+apic300ref.wopen(temp)
+apic300.printf(apic300ref, "%f\n")
+apic300ref.close() 
+
+apic475ref = new File()
+sprint(temp, "%s/apic475.dat", wave_vectors)
+apic475ref.wopen(temp)
+apic475.printf(apic475ref, "%f\n")
+apic475ref.close() 
+
+basal33ref = new File()
+sprint(temp, "%s/basal33.dat", wave_vectors)
+basal33ref.wopen(temp)
+basal33.printf(basal33ref, "%f\n")
+basal33ref.close() 
+
+basal92ref = new File()
+sprint(temp, "%s/basal92.dat", wave_vectors)
+basal92ref.wopen(temp)
+basal92.printf(basal92ref, "%f\n")
+basal92ref.close() 
+
+basal123ref = new File()
+sprint(temp, "%s/basal123.dat", wave_vectors)
+basal123ref.wopen(temp)
+basal123.printf(basal123ref, "%f\n")
+basal123ref.close() 
+
+basal145ref = new File()
+sprint(temp, "%s/basal145.dat", wave_vectors)
+basal145ref.wopen(temp)
+basal145.printf(basal145ref, "%f\n")
+basal145ref.close() 
+
+cairef = new File()
+sprint(temp, "%s/cai.dat",  wave_vectors)
+cairef.wopen(temp)
+cairec.printf(cairef, "%f\n")
+cairef.close()
+
+icanref = new File()
+sprint(temp, "%s/ican.dat",  wave_vectors)
+icanref.wopen(temp)
+icanrec.printf(icanref, "%f\n")
+icanref.close() 
+
+
+

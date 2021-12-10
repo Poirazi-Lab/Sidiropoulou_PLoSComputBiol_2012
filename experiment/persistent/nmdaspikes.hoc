@@ -1,0 +1,394 @@
+//Kiki initial experiment
+// 30 March 2006 
+//use corrected diameters for basal dendrites
+
+
+load_proc("nrnmainmenu")
+load_template("ExperimentControl")         // load needed templates
+load_template("RangeRef")
+cvode_active(0)
+
+objref econ                               // initialize template parameters
+show_errs=1
+debug_lev=1
+econ=new ExperimentControl(show_errs,debug_lev)
+econ.self_define(econ)
+econ.morphology_dir = "../../morphology/pfc"                // set location for morphology files
+econ.add_lib_dir("Terrence","../../lib")                    // set location for library files
+econ.generic_dir    = "../../experiment"                   // set location for cell-setup file
+econ.data_dir       = "data"                               // set directory to store data
+
+actual_resolution=75                                        // maximum nseg number 
+desired_resolution=1
+
+//Load morphology files
+
+econ.xopen_geometry_dependent("ratpfc22")     //C3_5
+
+printf ("morphology file opened")
+
+econ.xopen_generic("RScell")                       // load cell-setup for RS model
+//econ.xopen_generic("IBcell")                       // load cell-setup for IB model
+printf("Opened. Setting up cell\n")                   // specify all mechanisms,
+maximum_segment_length=actual_resolution              // membrane properties etc	 
+cell_setup(econ)
+
+
+//Set duration of the run and dt
+tstop=2000
+dt=0.1
+steps_per_ms=10
+setdt()
+
+//Noise procedure
+
+//INSERT MOD FILE FOR SINE WAVE
+/*
+
+objref sinw, w, ramp
+
+forsec soma_list {
+w = new Random()
+w.poisson(0.1)
+
+sinw  =  new SinClamp(0.5)
+sinw.del=0
+sinw.dur=tstop
+sinw.freq = 100
+w.play(&sinw.pkamp)
+}
+*/
+
+
+// Open library functions that will be needed
+econ.xopen_library("Terrence","choose-secs")    // used to randomly select sections from a list
+econ.xopen_library("Terrence","basic-graphics") // used to plot graphics 
+econ.xopen_library("Terrence","salloc")         // used to allocate synapses on sections
+load_template("SynapseBand")                    // template for making bands of synapses
+
+print "library_functions_loaded" 
+//----------------------------------------------------------------------------------------------------
+//set number of branches and number of synapses to be put on
+//-----------------------------------------------------------
+init_cluster_number = 1  //number of branches to place synapses on 
+init_cluster_size =40  //synapses in each branch for basal (use 1 for 
+basal_synapses= init_cluster_number * init_cluster_size
+
+
+ratio = 3  //for NMDA-to-AMPA ratio=1.3 use 3, for ratio 1.5, use 4
+max_synapses=1000
+//--------------------------------------------------------------- 
+
+//Define all objects used in the procedures
+//------------------------------------------
+
+objref cluster_list, AS_list, splot, rpid, band1,band2, band3,  ns1[basal_synapses], nc1[basal_synapses], ampab[basal_synapses], nmdab[basal_synapses], nc2[basal_synapses]
+objref stepp
+objref vf
+strdef tmpstr
+
+//set values for different variables
+//-----------------------------------
+
+delstimb =1500  
+
+
+//============================================================================================
+// procedure to place ampa, nmda on basal dendrites
+proc synapse_location_basal() {local b, b1, l, cluster_number, cluster_size, delstim1, total_synapses
+	
+
+
+	cluster_number = $2			//number of branches
+	cluster_size = $3			//number of synapses per branch
+	delstim1 = $4
+	l = $5
+	total_synapses = $6
+
+	//Randomly pick different branches to put synapses on it
+
+	cluster_list = new SectionList()
+	
+	for b = 0, cluster_number-1 {
+		$o1.pick_and_remove()	//select the branch
+		print "pick and remove"
+		cluster_list.append()
+		}
+	
+
+	//Distribute the synapses uniformly
+
+	
+	forsec cluster_list {
+
+		nseg = cluster_size
+ 	
+		
+		for b1 = 1, cluster_size {
+
+		//posn1 = 0.5
+		posn1 = (2*b1-1)/(2 * cluster_size)
+	
+		//5/2/08 validation based on Schiller paper, nat neuro 2007, 0.12mV at the soma
+	
+		ampaweight = 0.00015        
+ 	  	nmdaweight = ampaweight*ratio
+		
+		ampab[l] = new GLU(posn1) 
+		nmdab[l] = new NMDA(posn1)
+	
+		ns1[l] = new NetStimm(0.5)
+		ns1[l].start = 0
+		ns1[l].number =1  //2 	//number of APs
+		ns1[l].interval =20      //interval in ms between AP
+		ns1[l].noise=0   
+		
+			
+	
+		nc1[l] = new NetCon(ns1[l], ampab[l])
+		nc1[l].delay = delstimb    //ms
+		nc1[l].weight = ampaweight
+			
+		nc2[l] = new NetCon(ns1[l], nmdab[l])
+		nc2[l].delay = delstimb  
+		nc2[l].weight = nmdaweight   //*0.1
+	
+		splot.point_mark(ampab[l],COLOR+1)
+	
+		l=l+1
+	
+	}
+}
+	
+}
+
+
+//=====================================================================
+//Pharmacological procedures
+//values and sadp
+//1==> 5mV
+//0.95==> 2mV
+//0.97==>3mV
+
+
+
+gcanvalue=1.045*0
+//procedure for induction of sadp
+//In cell-setup, gip3 = 0.0001, gCAN=0.0001
+proc sadp() {
+forsec apical {
+for(x) {
+	fi2=gcanvalue	//factor for ican
+	if(ismembrane("ican"))  for(x) { gbar_ican(x)= gbar_ican(x)*fi2 } 
+	}}}
+
+proc sadpsoma() {
+forsec somatic {
+for(x) {
+	fi1=0     //factor for ip3
+	fi2=gcanvalue   	//factor for ican
+	if(ismembrane("ip3")) for(x) { gcabar_ip3(x)= gcabar_ip3(x)*fi1 }
+	if(ismembrane("ican"))  for(x) { gbar_ican(x)= gbar_ican(x)*fi2 } 
+	}}}
+
+proc sadpbasal() {
+forsec basal {
+for(x) {
+	fb=gcanvalue
+	if(ismembrane("ican")) for(x) {gbar_ican(x)=gbar_ican(x)*fb}
+	}}}
+
+
+//---------------------------------------------------------------------------
+
+//TTX
+proc ttx() {
+ft=0
+forall {
+	for(x) {
+      	if(ismembrane("Naf")) for(x) {  gnafbar_Naf(x)= gnafbar_Naf(x)*ft }
+	if(ismembrane("nap")) for(x) {  gnabar_nap(x)= gnabar_nap(x)*ft }	
+	}}}
+//-------------------------------------
+
+//--------------------------------------------------------------------------------
+proc Kblock(){
+forall{
+for(x){
+	fk=0
+	if(ismembrane("kdr")) for(x) { gkdrbar_kdr(x)= gkdrbar_kdr(x)*fk }	
+	if(ismembrane("kad")) for(x) { gkabar_kad(x)= gkabar_kad(x)*fk }
+	if(ismembrane("Ks"))  for(x) { gKsbar_Ks(x)= gKsbar_Ks(x)*fk } 
+	//if(ismembrane("kca")) { for(x) {  gbar_kca(x)= gbar_kca(x)*fk }} 
+	//if(ismembrane("mykca")) { for(x) {  gk_mykca(x)= gk_mykca(x)*fk }} 
+	}}}
+//--------------------------------------------------------------------------------
+
+
+
+//-----------------------Vclamp
+objref vc, vsoma
+
+proc vclamp() {
+//access soma[0]
+//vclamp at soma to study currents
+forsec somatic {
+for(x){
+vc = new VClamp(0.5)
+vc.dur[0]=tstop
+vc.amp[0]=60	//soma.v(0.5)
+}}
+}
+
+
+//Call pharamacological procedures
+sadp()
+sadpsoma()
+sadpbasal()
+Kblock()
+ttx()
+vclamp()
+
+
+//----------------------------------------------------------------------------------------------------
+
+//Graphics in the experiments
+
+econ.xopen_library("Terrence","basic-graphics")   // open library file for graphics
+addgraph("soma[0].v(0.5)",-70,-50)	//soma
+addgraph_2("dend[7].v(1)",0,tstop,-75,60) //basal 151um
+//addgraph_2("dend[20].v(0.5)",0,tstop,-75,60) //basal 154um
+
+
+
+//addgraph("soma[0].in_ican(0.5)",-1,1)	//soma
+
+//Define objects for recording
+objref vsoma, ip3rec, icanrec, cairec,vtrunk100, vtrunk200, vtrunk300, vtrunk400, vtrunk500, vtrunk600
+objref vb7, vb2, vb1089, vb840, vb827
+objref vb906cairec, vb884cairec, vb1032cairec, vb1089cairec, vb840cairec
+objref	vb961, vb990
+objref inarec
+
+//define objects for files
+strdef temp
+objref somaref, cairef, icanref, ip3ref,t100ref, t200ref, t300ref, t400ref, t500ref, t600ref
+objref vb7ref, vb2ref, vb1089ref, vb840ref, vb888ref, vb827ref
+objref vb906cai,  vb1032cai, vb1089cai, vb840cai, vb884cai
+objref vb961ref, vb990ref
+objref inaref
+
+//define objects for filenames
+
+//Make folder to store recorded waves into text files   
+strdef wave_vectors
+wave_vectors="data/nmdawaves"
+sprint(econ.syscmd, "mkdir -p %s",wave_vectors)
+system(econ.syscmd) 
+
+
+//==================================================================================================
+//Run Experiment -----------------------------------------------------------------------------------
+//===================================================================================================
+//econ.xopen_library("Terrence","verbose-system")
+
+for runs = 0,0 {
+
+ 	splot=new Shape()   
+      	COLOR=1+runs
+      	rpid=new Random(runs)
+      	PID=int(rpid.uniform(1,10000))  // random seed for AMPA/NMDA synapses
+      	PID=-PID // choose branchwise  
+      
+ 
+      	lo=0                           // smallest distance of selected obliques from soma
+      	hi=10000                        // maximum  distance of selected obliques from soma
+	actual_resolution = 75
+	desired_resolution = 1
+	
+
+	//Record and save waveforms
+	//Define objects outside the run procedure
+	
+	for i = 0,9{
+		
+		vsoma = new Vector()
+		vsoma.record(&soma[0].v(0.5))
+
+/*
+		cairec = new Vector(tstop/dt)  //record cai at the soma
+		cairec.record(&apical_dendrite[14].cai(0.5))
+*/
+//currents
+
+		icanrec = new Vector(tstop/dt)  //record ican at the soma
+		icanrec.record(&soma[0].in_ican(0.5))
+		
+//voltage in stimulated dendrites
+		vb7 = new Vector()
+		vb7.record(&dend[7].v(0.5))
+		
+		vb2 = new Vector()
+		vb2.record(&dend[2].v(0.5))
+
+//list for validation synaptic currents on basal dendrites
+		AS_list = new SectionList()
+		
+		//dend[2] AS_list.append() //basal 55um
+		dend[7]  AS_list.append() //basal 78um
+	
+
+
+	//make a band (list) of randomly selected obliques within lo and hi microns from soma
+       
+	band1 = new SynapseBand(basal,lo,hi,actual_resolution,desired_resolution,PID) //basal_tree
+	band2 = new SynapseBand(AS_list,lo,hi,actual_resolution,desired_resolution,PID)
+	band3 = new SynapseBand(somatic,lo,hi,actual_resolution,desired_resolution,PID)
+	
+}
+
+
+//Run procedure to place ampa and nmda
+
+        
+     
+	l=0 //initialize the nubmer of synapses used in each run
+	basal_synapses= basal_synapses+1
+
+//activate synapses on basal_tree
+	synapse_location_basal(band2, init_cluster_number, init_cluster_size, delstimb, l, basal_synapses) 
+
+print runs
+
+
+finitialize(v_init)
+run()
+
+		somaref = new File()
+		sprint(temp, "%s/nsoma-%d.dat", wave_vectors, runs)
+		somaref.wopen(temp)
+		somaref.printf("soma-%d", runs, "%s\n")
+		somaref.printf("\n")
+		vsoma.printf(somaref, "%f\n")
+		somaref.close()
+	
+		vb2ref = new File()
+		sprint(temp, "%s/vdend2-%d.dat", wave_vectors, runs)
+		vb2ref.wopen(temp)
+		vb2ref.printf("vb2-%d", runs, "%s\n")
+		vb2ref.printf("\n")
+		vb2.printf(vb2ref, "%f\n")
+		vb2ref.close()
+
+
+		vb7ref = new File()
+		sprint(temp, "%s/vdend7-%d.dat", wave_vectors, runs)
+		vb7ref.wopen(temp)		
+		vb7ref.printf("vb7-%d", runs, "%s\n")
+		vb7ref.printf("\n")
+		vb7.printf(vb7ref, "%f\n")
+		vb7ref.close()
+
+}
+
+//=====================Finish Running Experiment===================================================

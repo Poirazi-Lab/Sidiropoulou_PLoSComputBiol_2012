@@ -1,0 +1,865 @@
+general
+celsius
+34
+Temperature of slice.
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+300.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+50.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
+channel:na
+max_ar2
+0.95
+Somatic value of ar2
+
+channel:na
+min_ar2
+0.30
+Minimum value of ar2
+
+channel:na
+decay_end
+50.0
+Distance beyond which all values are min_ar2
+
+channel:na
+decay_start
+20.0
+Distance at which ar2 starts to decrease
+
